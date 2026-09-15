@@ -1,1 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RTAid Foundation — Recovery, resilience, dignity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B211F;
+    --paper:#F3F1E9;
+    --sand:#E8E1D0;
+    --teal:#1B4B43;
+    --teal-dark:#12332D;
+    --ochre:#C98A3E;
+    --line:#CFC8B4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    line-height:1.6;
+    font-size:16px;
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:'Source Serif 4',serif;
+    font-weight:600;
+    line-height:1.15;
+    color:var(--teal-dark);
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 32px;}
+  :focus-visible{outline:3px solid var(--ochre);outline-offset:3px;}
+
+  /* Reveal-on-scroll */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  .reveal-delay-1{transition-delay:.1s;}
+  .reveal-delay-2{transition-delay:.2s;}
+  .reveal-delay-3{transition-delay:.3s;}
+
+  /* Header */
+  header{
+    padding:26px 0;
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;
+    background:rgba(243,241,233,.92);
+    backdrop-filter:blur(6px);
+    z-index:50;
+  }
+  header .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .logo{
+    font-family:'Source Serif 4',serif;
+    font-size:20px;
+    font-weight:600;
+  }
+  nav ul{display:flex;gap:28px;list-style:none;}
+  nav a{
+    font-size:15px;
+    text-decoration:none;
+    color:var(--ink);
+    border-bottom:1px solid transparent;
+    padding-bottom:2px;
+    transition:border-color .15s ease;
+  }
+  nav a:hover{border-color:var(--ochre);}
+
+  /* Hero */
+  .hero{
+    position:relative;
+    padding:0;
+    min-height:82vh;
+    display:flex;
+    align-items:flex-end;
+    overflow:hidden;
+  }
+  .hero-bg{
+    position:absolute;inset:0;
+    background:url('https://picsum.photos/seed/rtaid-hero/1800/1100') center/cover no-repeat;
+    transform:scale(1.08);
+    animation:heroZoom 16s ease-out forwards;
+  }
+  @keyframes heroZoom{to{transform:scale(1);}}
+  .hero-scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(18,51,45,.25) 0%, rgba(18,51,45,.85) 100%);
+  }
+  .hero-inner{
+    position:relative;
+    width:100%;
+    padding:72px 0 64px;
+  }
+  .hero-inner .wrap{
+    display:grid;
+    grid-template-columns:1.3fr 1fr;
+    gap:56px;
+    align-items:end;
+  }
+  .hero h1{
+    color:var(--paper);
+    font-size:46px;
+    max-width:12ch;
+    opacity:0;
+    animation:fadeUp .9s ease .2s forwards;
+  }
+  .hero p{
+    margin-top:20px;
+    max-width:44ch;
+    font-size:17px;
+    color:#E6E2D4;
+    opacity:0;
+    animation:fadeUp .9s ease .4s forwards;
+  }
+  .hero-cta{
+    margin-top:32px;display:flex;gap:16px;flex-wrap:wrap;
+    opacity:0;
+    animation:fadeUp .9s ease .6s forwards;
+  }
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:translateY(0);}}
+
+  .btn{
+    display:inline-block;
+    padding:13px 26px;
+    font-size:15px;
+    font-weight:500;
+    text-decoration:none;
+    border-radius:2px;
+    transition:background .15s ease, color .15s ease, transform .15s ease;
+  }
+  .btn-primary{background:var(--ochre);color:var(--teal-dark);}
+  .btn-primary:hover{background:#DCA05B;transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--paper);color:var(--paper);}
+  .btn-ghost:hover{background:var(--paper);color:var(--teal-dark);transform:translateY(-2px);}
+
+  .stat-block{
+    border-left:2px solid var(--ochre);
+    padding-left:24px;
+    opacity:0;
+    animation:fadeUp .9s ease .8s forwards;
+  }
+  .stat-block .num{
+    font-family:'Source Serif 4',serif;
+    font-size:60px;
+    font-weight:600;
+    color:var(--ochre);
+    line-height:1;
+  }
+  .stat-block .cap{
+    margin-top:10px;
+    font-size:15px;
+    color:#E6E2D4;
+    max-width:24ch;
+  }
+
+  /* Section headings */
+  .section{padding:80px 0;border-top:1px solid var(--line);}
+  .section-head{max-width:62ch;margin-bottom:44px;}
+  .section-head h2{font-size:30px;}
+  .section-head p{margin-top:14px;color:#3A4340;font-size:16px;}
+
+  /* Story */
+  .story .wrap{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+  .story p{margin-bottom:16px;color:#2C3532;}
+  .story-img{
+    border-radius:2px;
+    overflow:hidden;
+  }
+  .story-img img{
+    transition:transform .6s ease;
+  }
+  .story-img:hover img{transform:scale(1.05);}
+
+  .photo-strip{
+    display:grid;
+    grid-template-columns:1.35fr 1fr 1fr;
+    gap:12px;
+    margin-top:48px;
+  }
+  .photo-strip figure{position:relative;min-height:190px;overflow:hidden;background:var(--sand);}
+  .photo-strip figure:first-child{min-height:270px;}
+  .photo-strip img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+  .photo-strip figure:hover img{transform:scale(1.05);}
+  .photo-strip figcaption{position:absolute;bottom:0;left:0;right:0;padding:34px 16px 14px;color:var(--paper);font-size:13px;background:linear-gradient(transparent,rgba(18,51,45,.82));}
+
+  /* Program explorer */
+  .program-toolbar{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:20px;}
+  .program-count{font-size:13px;color:#5B615E;}
+  .view-switch{display:flex;border:1px solid var(--line);background:var(--paper);}
+  .view-btn{border:0;background:transparent;color:var(--teal-dark);width:42px;height:38px;display:grid;place-items:center;cursor:pointer;}
+  .view-btn + .view-btn{border-left:1px solid var(--line);}
+  .view-btn[aria-pressed="true"]{background:var(--teal);color:var(--paper);}
+  .view-btn svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.8;}
+  .program{
+    display:flex;flex-direction:column;
+    background:#FAF8F1;
+    border:1px solid var(--line);
+    min-width:0;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .program:hover{transform:translateY(-4px);box-shadow:0 12px 24px rgba(27,33,31,.08);}
+  .programs-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;}
+  .program-img{
+    overflow:hidden;
+    aspect-ratio:16/9;
+  }
+  .program-img img{
+    width:100%;height:100%;object-fit:cover;
+    transition:transform .6s ease;
+  }
+  .program-img:hover img{transform:scale(1.06);}
+  .program-content{padding:22px 24px 26px;}
+  .program h3{font-size:22px;}
+  .program-icon{width:38px;height:38px;display:grid;place-items:center;background:var(--sand);color:var(--teal);margin-bottom:16px;}
+  .program-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;}
+  .program .meta{
+    display:inline-block;
+    font-size:13px;
+    color:var(--teal);
+    font-weight:600;
+    letter-spacing:.2px;
+    padding:4px 10px;
+    background:var(--sand);
+    margin-bottom:10px;
+  }
+  .program p{color:#3A4340;margin-top:8px;max-width:52ch;}
+  .programs-grid.list-view{display:flex;flex-direction:column;gap:0;}
+  .list-view .program{display:grid;grid-template-columns:190px 1fr;border-width:1px 0 0;background:transparent;box-shadow:none;transform:none;}
+  .list-view .program:last-child{border-bottom-width:1px;}
+  .list-view .program-img{aspect-ratio:auto;min-height:160px;}
+  .list-view .program-content{display:grid;grid-template-columns:42px 1fr;column-gap:18px;align-items:start;padding:22px 24px;}
+  .list-view .program-icon{grid-row:span 2;margin:0;}
+  .list-view .meta{grid-column:2;grid-row:1;}
+  .list-view h3,.list-view p{grid-column:2;}
+
+  /* Impact strip */
+  .impact{background:var(--teal);color:var(--paper);position:relative;overflow:hidden;}
+  .impact .section-head h2,
+  .impact .section-head p{color:var(--paper);}
+  .impact-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:40px;
+  }
+  .impact-item .num{
+    font-family:'Source Serif 4',serif;
+    font-size:40px;
+    font-weight:600;
+    color:var(--ochre);
+  }
+  .impact-item .label{margin-top:8px;font-size:14px;color:#D8E2DE;}
+
+  /* Get involved */
+  .involve-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+  }
+  .involve-card{
+    padding:28px;background:var(--sand);
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .involve-card:hover{transform:translateY(-4px);}
+  .involve-card h3{font-size:19px;margin-bottom:10px;}
+  .involve-card p{color:#3A4340;margin-bottom:18px;font-size:15px;}
+
+  /* Footer */
+  footer{border-top:1px solid var(--line);padding:40px 0;}
+  footer .wrap{
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;
+    font-size:14px;color:#5B615E;
+  }
+
+  @media (max-width:760px){
+    .hero-inner .wrap{grid-template-columns:1fr;}
+    .story .wrap{grid-template-columns:1fr;}
+    .impact-grid{grid-template-columns:1fr 1fr;gap:28px;}
+    .involve-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:32px;}
+    .photo-strip{grid-template-columns:1fr 1fr;}
+    .photo-strip figure:first-child{grid-column:1/-1;min-height:230px;}
+    .program-toolbar{align-items:flex-start;}
+    .programs-grid{grid-template-columns:1fr;}
+    .list-view .program{grid-template-columns:110px 1fr;}
+    .list-view .program-content{display:block;padding:18px;}
+    .list-view .program-icon{float:left;margin:0 12px 8px 0;}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    *{animation:none !important;transition:none !important;}
+    .hero h1,.hero p,.hero-cta,.stat-block{opacity:1;transform:none;}
+    .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">RTAid Foundation</div>
+    <nav aria-label="Primary">
+      <ul>
+        <li><a href="#story">Our story</a></li>
+        <li><a href="#programs">Programmes</a></li>
+        <li><a href="#impact">Impact</a></li>
+        <li><a href="#involve">Get involved</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-scrim"></div>
+    <div class="hero-inner">
+      <div class="wrap">
+        <div>
+          <h1>Recovery that stays after the crisis ends.</h1>
+          <p>RTAid Foundation works alongside communities recovering from conflict and disaster — rebuilding livelihoods, protecting the vulnerable, and keeping children learning through disruption.</p>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#involve">Donate</a>
+            <a class="btn btn-ghost" href="#programs">See our programmes</a>
+          </div>
+        </div>
+        <div class="stat-block">
+          <div class="num">38</div>
+          <p class="cap">Communities supported across our four programme areas</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section story reveal" id="story">
+    <div class="wrap">
+      <div class="story-img">
+        <img src="https://picsum.photos/seed/rtaid-story/900/700" alt="A community meeting during an RTAid Foundation programme visit" loading="lazy">
+      </div>
+      <div>
+        <h2>Why we work this way</h2>
+        <p>RTAid Foundation was founded to close the gap between emergency relief and long-term recovery — the period where the crisis has faded from headlines but a community is still rebuilding.</p>
+        <p>We don't run one program in isolation. A farming family recovering from displacement needs seed and tools, but also a safe environment for their children and a school that's still open.</p>
+        <p>That's why our four programmes — Agricultural Recovery, Education, Protection, and Food Security &amp; Livelihoods — are designed and delivered together, in the same communities, by the same field teams.</p>
+      </div>
+    </div>
+    <div class="wrap photo-strip reveal reveal-delay-1" aria-label="RTAid Foundation field work">
+      <figure>
+        <img src="https://picsum.photos/seed/rtaid-field-team/1000/700" alt="RTAid field team meeting with community members" loading="lazy">
+        <figcaption>Local teams, lasting relationships</figcaption>
+      </figure>
+      <figure>
+        <img src="https://picsum.photos/seed/rtaid-water/700/700" alt="Community members collecting clean water" loading="lazy">
+        <figcaption>Practical support</figcaption>
+      </figure>
+      <figure>
+        <img src="https://picsum.photos/seed/rtaid-market/700/700" alt="A small market stall supported by a livelihoods programme" loading="lazy">
+        <figcaption>Recovery in motion</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section programs" id="programs">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <h2>Our programmes</h2>
+        <p>Four connected areas of work, run together in every community we serve.</p>
+      </div>
+
+      <div class="program-toolbar reveal reveal-delay-1">
+        <span class="program-count">Explore 4 connected programmes</span>
+        <div class="view-switch" role="group" aria-label="Programme view">
+          <button class="view-btn" type="button" data-view="grid" aria-label="Grid view" aria-pressed="true" title="Grid view">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6"></rect><rect x="14" y="4" width="6" height="6"></rect><rect x="4" y="14" width="6" height="6"></rect><rect x="14" y="14" width="6" height="6"></rect></svg>
+          </button>
+          <button class="view-btn" type="button" data-view="list" aria-label="List view" aria-pressed="false" title="List view">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="6" x2="19" y2="6"></line><line x1="5" y1="12" x2="19" y2="12"></line><line x1="5" y1="18" x2="19" y2="18"></line></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="programs-grid" data-programs>
+      <article class="program reveal">
+        <div class="program-img">
+          <img src="https://picsum.photos/seed/rtaid-agriculture/800/600" alt="Farmers tending crops as part of an agricultural recovery programme" loading="lazy">
+        </div>
+        <div class="program-content">
+          <div class="program-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20V10"></path><path d="M12 10C8 10 6 8 6 4c4 0 6 2 6 6Z"></path><path d="M12 14c4 0 6-2 6-6-4 0-6 2-6 6Z"></path><path d="M5 20h14"></path></svg></div>
+          <span class="meta">Agricultural Recovery &amp; Development</span>
+          <h3>Getting farms producing again</h3>
+          <p>We provide seed, tools, and training to farming households who've lost a season or more to displacement or disaster, paired with support to restore degraded land and diversify what's grown.</p>
+        </div>
+      </article>
+
+      <article class="program reveal">
+        <div class="program-img">
+          <img src="https://picsum.photos/seed/rtaid-education/800/600" alt="Children in a classroom during an RTAid Foundation education programme" loading="lazy">
+        </div>
+        <div class="program-content">
+          <div class="program-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5Z"></path><path d="M4 5.5v16"></path><path d="M8 7h8"></path><path d="M8 11h8"></path></svg></div>
+          <span class="meta">Education</span>
+          <h3>Keeping children learning through disruption</h3>
+          <p>We rebuild and equip classrooms, train teachers working in displacement-affected areas, and run catch-up learning for children who've missed months or years of school.</p>
+        </div>
+      </article>
+
+      <article class="program reveal">
+        <div class="program-img">
+          <img src="https://picsum.photos/seed/rtaid-protection/800/600" alt="A protection caseworker meeting with a family in the community" loading="lazy">
+        </div>
+        <div class="program-content">
+          <div class="program-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s8-4.4 8-10V5l-8-3-8 3v6c0 5.6 8 10 8 10Z"></path><path d="M9 12l2 2 4-4"></path></svg></div>
+          <span class="meta">Protection</span>
+          <h3>Keeping the most vulnerable safe</h3>
+          <p>Our caseworkers identify and support survivors of violence and exploitation, reunite separated children with their families, and run community awareness on safe reporting channels.</p>
+        </div>
+      </article>
+
+      <article class="program reveal">
+        <div class="program-img">
+          <img src="https://picsum.photos/seed/rtaid-fsl/800/600" alt="Community members receiving food and livelihood support" loading="lazy">
+        </div>
+        <div class="program-content">
+          <div class="program-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16"></path><path d="M6 17V9h12v8"></path><path d="M4 9h16"></path><path d="M8 9V5h8v4"></path><path d="M9 13h6"></path></svg></div>
+          <span class="meta">Food Security &amp; Livelihoods (FSL)</span>
+          <h3>Bridging the gap until harvest</h3>
+          <p>Cash transfers, food assistance, and small-business grants for households with no current income — sized and timed to cover the gap until a farm or trade is producing again.</p>
+        </div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section impact reveal" id="impact">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Ten years, measured</h2>
+        <p>Figures as of our most recent annual report.</p>
+      </div>
+      <div class="impact-grid">
+        <div class="impact-item">
+          <div class="num" data-count="38">0</div>
+          <div class="label">Communities supported</div>
+        </div>
+        <div class="impact-item">
+          <div class="num" data-count="12400">0</div>
+          <div class="label">Farming households reached</div>
+        </div>
+        <div class="impact-item">
+          <div class="num" data-count="61">0</div>
+          <div class="label">Classrooms rebuilt or equipped</div>
+        </div>
+        <div class="impact-item">
+          <div class="num" data-count="3200">0</div>
+          <div class="label">Protection cases supported</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reveal" id="involve">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Get involved</h2>
+        <p>Two ways to help — pick whichever fits.</p>
+      </div>
+      <div class="involve-grid">
+        <div class="involve-card">
+          <h3>Give</h3>
+          <p>A recurring monthly gift lets us respond quickly when a new community needs support, without waiting on a fresh grant cycle.</p>
+          <a class="btn btn-primary" href="#" style="background:var(--teal);color:var(--paper);">Donate monthly</a>
+        </div>
+        <div class="involve-card">
+          <h3>Volunteer</h3>
+          <p>We run short field placements for agronomists, teachers, and protection caseworkers a few times a year.</p>
+          <a class="btn btn-ghost" href="#" style="border-color:var(--ink);color:var(--ink);">See open placements</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 RTAid Foundation. Registered nonprofit.</div>
+    <div>hello@rtaidfoundation.org</div>
+  </div>
+</footer>
+
+<script>
+  // Scroll-triggered reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('in-view'); });
+  }
+
+  // Programme view switcher
+  var programGrid = document.querySelector('[data-programs]');
+  var viewButtons = document.querySelectorAll('[data-view]');
+  viewButtons.forEach(function(button){
+    button.addEventListener('click', function(){
+      var isList = button.getAttribute('data-view') === 'list';
+      programGrid.classList.toggle('list-view', isList);
+      viewButtons.forEach(function(item){
+        item.setAttribute('aria-pressed', String(item === button));
+      });
+    });
+  });
+
+  // Impact counters
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var counters = document.querySelectorAll('[data-count]');
+  function animateCount(el){
+    var target = parseInt(el.getAttribute('data-count'), 10);
+    if (prefersReduced) { el.textContent = target.toLocaleString(); return; }
+    var start = 0;
+    var duration = 1200;
+    var startTime = null;
+    function step(ts){
+      if (!startTime) startTime = ts;
+      var progress = Math.min((ts - startTime) / duration, 1);
+      var value = Math.floor(progress * target);
+      el.textContent = value.toLocaleString();
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(step);
+  }
+  if ('IntersectionObserver' in window) {
+    var counterIo = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          animateCount(entry.target);
+          counterIo.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.4 });
+    counters.forEach(function(el){ counterIo.observe(el); });
+  } else {
+    counters.forEach(animateCount);
+  }
+</script>
+
+</body>
+</html>
 
